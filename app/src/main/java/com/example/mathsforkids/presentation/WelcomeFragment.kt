@@ -1,10 +1,10 @@
 package com.example.mathsforkids.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.mathsforkids.R
 import com.example.mathsforkids.databinding.FragmentWelcomeBinding
 
@@ -13,7 +13,7 @@ class WelcomeFragment : Fragment() {
 
     private var _binding: FragmentWelcomeBinding? = null
     private val binding
-    get() = _binding ?: throw RuntimeException("FragmentWelcomeBinding == null")
+        get() = _binding ?: throw RuntimeException("FragmentWelcomeBinding == null")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +25,22 @@ class WelcomeFragment : Fragment() {
     ): View? {
         _binding = FragmentWelcomeBinding.inflate(layoutInflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.buttonLetsPlay.setOnClickListener {
+            launchChooseLevelFragment()
+        }
+    }
+
+    private fun launchChooseLevelFragment() {
+        activity?.let {
+            it.supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container, ChooseLevelFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     override fun onDestroyView() {
