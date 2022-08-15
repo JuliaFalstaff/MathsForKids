@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.mathsforkids.R
 import com.example.mathsforkids.databinding.FragmentGameFinishedBinding
 import com.example.mathsforkids.domain.entity.GameResult
 
@@ -31,8 +32,8 @@ class GameFinishedFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentGameFinishedBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -40,21 +41,63 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    retryGame()
-                }
-            })
+        setDameResultData()
+        setOnBackPressedCallback()
+        retryGameAgain()
+    }
+
+
+    private fun setDameResultData() = with(binding) {
+        textViewRequiredAnswers.text = String.format(
+                getString(R.string.required_score),
+                gameResult.gameSettings.minCountOfRightAnswers
+        )
+        textViewRequiredPercentage.text = String.format(
+                getString(R.string.required_percentage),
+                gameResult.gameSettings.minPercentOfRightAnswers
+        )
+        textViewScoreAnswers.text = String.format(
+                getString(R.string.score_answers),
+                gameResult.countOfRightAnswers
+        )
+        textViewScorePercentage.text = String.format(
+                getString(R.string.score_percentage),
+                getPercentOfRightAnswers()
+        )
+        if (gameResult.winner) {
+            imageViewEmojiResult.setImageResource(R.drawable.ic_launcher_foreground)
+        } else {
+            imageViewEmojiResult.setImageResource(R.drawable.ic_launcher_background)
+        }
+    }
+
+    private fun getPercentOfRightAnswers() = with(gameResult) {
+        if (countOfQuestions == 0) {
+            0
+        } else {
+            ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        }
+    }
+
+    private fun retryGameAgain() {
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
     }
 
+    private fun setOnBackPressedCallback() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        retryGame()
+                    }
+                })
+    }
+
     private fun retryGame() {
         requireActivity().supportFragmentManager.popBackStack(
-            GameFragment.NAME,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE
+                GameFragment.NAME,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
         )
     }
 
