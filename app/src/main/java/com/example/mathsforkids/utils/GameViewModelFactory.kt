@@ -6,12 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.mathsforkids.domain.entity.Level
 import com.example.mathsforkids.presentation.GameViewModel
 
+
 class GameViewModelFactory(
-        private val level: Level,
-        private val application: Application
+    private val level: Level,
+    private val application: Application
 ): ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
             return GameViewModel(level, application) as T
         }
