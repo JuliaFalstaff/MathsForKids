@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.mathsforkids.R
 import com.example.mathsforkids.databinding.FragmentGameFinishedBinding
-import com.example.mathsforkids.domain.entity.GameResult
 
 
 class GameFinishedFragment : Fragment() {
@@ -23,8 +19,8 @@ class GameFinishedFragment : Fragment() {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?,
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentGameFinishedBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -32,42 +28,43 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setDameResultData()
+        binding.gameResult = args.gameResult
         retryGameAgain()
     }
 
 
-    private fun setDameResultData() = with(binding) {
-        textViewRequiredAnswers.text = String.format(
-                getString(R.string.required_score),
-                args.gameResult.gameSettings.minCountOfRightAnswers
-        )
-        textViewRequiredPercentage.text = String.format(
-                getString(R.string.required_percentage),
-                args.gameResult.gameSettings.minPercentOfRightAnswers
-        )
-        textViewScoreAnswers.text = String.format(
-                getString(R.string.score_answers),
-                args.gameResult.countOfRightAnswers
-        )
-        textViewScorePercentage.text = String.format(
-                getString(R.string.score_percentage),
-                getPercentOfRightAnswers()
-        )
-        if (args.gameResult.winner) {
-            imageViewEmojiResult.setImageResource(R.drawable.ic_launcher_foreground)
-        } else {
-            imageViewEmojiResult.setImageResource(R.drawable.ic_launcher_background)
-        }
-    }
-
-    private fun getPercentOfRightAnswers() = with(args.gameResult) {
-        if (countOfQuestions == 0) {
-            0
-        } else {
-            ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
-        }
-    }
+//    private fun setDameResultData() = with(binding) {
+//        gameResult = args.gameResult
+////        textViewRequiredAnswers.text = String.format(
+////                getString(R.string.required_score),
+////                args.gameResult.gameSettings.minCountOfRightAnswers
+////        )
+////        textViewRequiredPercentage.text = String.format(
+////                getString(R.string.required_percentage),
+////                args.gameResult.gameSettings.minPercentOfRightAnswers
+////        )
+////        textViewScoreAnswers.text = String.format(
+////                getString(R.string.score_answers),
+////                args.gameResult.countOfRightAnswers
+////        )
+////        textViewScorePercentage.text = String.format(
+////                getString(R.string.score_percentage),
+////                getPercentOfRightAnswers()
+////        )
+//        if (args.gameResult.winner) {
+//            imageViewEmojiResult.setImageResource(R.drawable.ic_launcher_foreground)
+//        } else {
+//            imageViewEmojiResult.setImageResource(R.drawable.ic_launcher_background)
+//        }
+//    }
+//
+//    private fun getPercentOfRightAnswers() = with(args.gameResult) {
+//        if (countOfQuestions == 0) {
+//            0
+//        } else {
+//            ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+//        }
+//    }
 
     private fun retryGameAgain() {
         binding.buttonRetry.setOnClickListener {
@@ -85,7 +82,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     companion object {
-       private const val KEY_GAME_RESULT = "result"
+        private const val KEY_GAME_RESULT = "result"
 
     }
 }
