@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.mathsforkids.R
 import com.example.mathsforkids.databinding.FragmentGameFinishedBinding
 import com.example.mathsforkids.domain.entity.GameResult
@@ -15,22 +16,11 @@ import com.example.mathsforkids.domain.entity.GameResult
 
 class GameFinishedFragment : Fragment() {
 
-    private lateinit var gameResult: GameResult
-
+    private val args by navArgs<GameFinishedFragmentArgs>()
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding
         get() = _binding ?: throw RuntimeException("FragmentGameFinishedBinding == null")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseGameResult()
-    }
-
-    private fun parseGameResult() {
-        requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
-            gameResult = it
-        }
-    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -50,28 +40,28 @@ class GameFinishedFragment : Fragment() {
     private fun setDameResultData() = with(binding) {
         textViewRequiredAnswers.text = String.format(
                 getString(R.string.required_score),
-                gameResult.gameSettings.minCountOfRightAnswers
+                args.gameResult.gameSettings.minCountOfRightAnswers
         )
         textViewRequiredPercentage.text = String.format(
                 getString(R.string.required_percentage),
-                gameResult.gameSettings.minPercentOfRightAnswers
+                args.gameResult.gameSettings.minPercentOfRightAnswers
         )
         textViewScoreAnswers.text = String.format(
                 getString(R.string.score_answers),
-                gameResult.countOfRightAnswers
+                args.gameResult.countOfRightAnswers
         )
         textViewScorePercentage.text = String.format(
                 getString(R.string.score_percentage),
                 getPercentOfRightAnswers()
         )
-        if (gameResult.winner) {
+        if (args.gameResult.winner) {
             imageViewEmojiResult.setImageResource(R.drawable.ic_launcher_foreground)
         } else {
             imageViewEmojiResult.setImageResource(R.drawable.ic_launcher_background)
         }
     }
 
-    private fun getPercentOfRightAnswers() = with(gameResult) {
+    private fun getPercentOfRightAnswers() = with(args.gameResult) {
         if (countOfQuestions == 0) {
             0
         } else {
@@ -95,15 +85,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     companion object {
-       const val KEY_GAME_RESULT = "result"
+       private const val KEY_GAME_RESULT = "result"
 
-        @JvmStatic
-        fun newInstance(gameResult: GameResult): GameFinishedFragment {
-            return GameFinishedFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_GAME_RESULT, gameResult)
-                }
-            }
-        }
     }
 }
