@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="gameResult"
+            type="com.example.mathsforkids.domain.entity.GameResult" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light">
+
+        <ImageView
+            android:id="@+id/imageViewEmojiResult"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="48dp"
+            android:contentDescription="@string/game_over"
+            app:isWinnerImage="@{gameResult.winner}"
+            app:layout_constraintBottom_toTopOf="@id/textViewRequiredAnswers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@android:drawable/picture_frame" />
+
+        <TextView
+            android:id="@+id/textViewRequiredAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/textViewScoreAnswers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:requireAnswers="@{gameResult.gameSettings.minCountOfRightAnswers}"
+            tools:text="@string/required_score" />
+
+        <TextView
+            android:id="@+id/textViewScoreAnswers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/textViewRequiredPercentage"
+            app:layout_constraintEnd_toEndOf="@id/textViewRequiredAnswers"
+            app:layout_constraintStart_toStartOf="@id/textViewRequiredAnswers"
+            app:layout_constraintTop_toBottomOf="@id/textViewRequiredAnswers"
+            app:scoreAnswers="@{gameResult.countOfRightAnswers}"
+            tools:text="@string/score_answers" />
+
+        <TextView
+            android:id="@+id/textViewRequiredPercentage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/textViewScorePercentage"
+            app:layout_constraintEnd_toEndOf="@id/textViewRequiredAnswers"
+            app:layout_constraintStart_toStartOf="@id/textViewRequiredAnswers"
+            app:layout_constraintTop_toBottomOf="@id/textViewScoreAnswers"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:requiredPercentage="@{gameResult.gameSettings.minPercentOfRightAnswers}"
+            tools:text="@string/required_percentage" />
+
+        <TextView
+            android:id="@+id/textViewScorePercentage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/textViewRequiredAnswers"
+            app:layout_constraintStart_toStartOf="@id/textViewRequiredAnswers"
+            app:layout_constraintTop_toBottomOf="@id/textViewRequiredPercentage"
+            app:scorePercentage="@{gameResult}"
+            tools:text="@string/score_percentage" />
+
+        <Button
+            android:id="@+id/buttonRetry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/retry"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
